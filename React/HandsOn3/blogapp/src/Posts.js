@@ -1,4 +1,5 @@
 import React from "react";
+import Post from './Post';
 
 class Posts extends React.Component{
     constructor(props){
@@ -8,17 +9,28 @@ class Posts extends React.Component{
         };
     }
     loadPosts = async () => {
-        console.log("loadPosts method calls");
+        // console.log("loadPosts method calls");
         const url = "https://jsonplaceholder.typicode.com/posts/";
         const response = await fetch(url);
         const json = await response.json(); 
-        console.log(json);
-        this.setState({posts: json});
+        // console.log(json);
+        const postMock = [];
+        json.forEach(element => {
+            postMock.push(new Post(element.id, element.title, element.body));
+        });
+        console.log(postMock);
+        // const filtered_post = [
+        // {json.map((post) => {
+        //     new Post(post)
+        // })}
+        // ]
+
+        this.setState({posts: postMock});
     }
     componentDidMount(){
         // console.log("Component Did Mount Call");
         if(this.state.posts.length === 0){
-            console.log('mount it!');
+            // console.log('mount it!');
             this.loadPosts();
         }
         
@@ -26,18 +38,18 @@ class Posts extends React.Component{
         // this.setState({posts: posts});
     }
     render(){
-        console.log("Render lifecycle");
+        // console.log("Render lifecycle");
         return (
             <>
-                {this.state.posts.map((post) => (
-                    <article className="blog" key={post.id}>
-                        <div key={post.id} className="postContainer">
+                {this.state.posts.map((Post) => (
+                    <article className="blog" key={Post.id}>
+                        <div key={Post.id} className="postContainer">
                             <div className="postId">
-                                <span>{post.id}</span>
+                                <span>{Post.id}</span>
                             </div>
                             <div className="postInfo">
-                                <div className="postTitle"><b>Title:</b> {post.title}</div>
-                                <div className="postBody"><b>Body:</b> {post.body}</div>
+                                <div className="postTitle"><b>Title:</b> {Post.title}</div>
+                                <div className="postBody"><b>Body:</b> {Post.body}</div>
                             </div>
                         </div>
                     </article>
